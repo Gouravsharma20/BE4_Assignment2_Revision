@@ -26,7 +26,7 @@ app.get("/",(req,res)=>{
 
 async function addRecipe(recipeToAdd) {
     try {
-        const newRecipe = Recipe.insertOne(recipeToAdd)
+        const newRecipe = await Recipe.insertOne(recipeToAdd)
         return newRecipe
 
     } catch(err){
@@ -37,7 +37,7 @@ async function addRecipe(recipeToAdd) {
 app.post("/recipes",async (req,res)=>{
      try {
         const addedRecipe = await addRecipe(req.body)
-        if (!addRecipe) {
+        if (!addedRecipe) {
             return res.status(404).json({error:"newly added recipe not found"})
         } else {
             return res.status(200).json({message:"new Recipe added successfully",newlyAddedRecipe:addedRecipe})
@@ -88,7 +88,7 @@ async function getRecipeBy(recipeBy) {
 
 // get recipe details by title
 
-app.get("title/:title",async (req,res)=>{
+app.get("/title/:title",async (req,res)=>{
     const title = req.params.title
     const foundRecipe = await getRecipeBy({title})
     try {
@@ -105,7 +105,7 @@ app.get("title/:title",async (req,res)=>{
 
 // get recipe details by author name
 
-app.get("author/:author",async(req,res)=>{
+app.get("/author/:author",async(req,res)=>{
     const author = req.params.author
     try {
         const foundRecipe = await getRecipeBy({author})
